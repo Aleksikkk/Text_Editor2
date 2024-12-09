@@ -29,6 +29,7 @@ class TextEditor:
         self.root.config(menu=self.menu)
         self.create_file_menu()
         self.create_settings_menu()
+        self.create_font_menu()  
 
     def create_file_menu(self):
         file_menu = tk.Menu(self.menu, tearoff=0)
@@ -46,8 +47,9 @@ class TextEditor:
         settings_menu = tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Settings", menu=settings_menu)
         settings_menu.add_command(label="Change Theme", command=self.change_theme)
-        settings_menu.add_separator()  
-        settings_menu.add_command(label="Font", command=self.change_font_size)  
+
+    def create_font_menu(self):
+        self.menu.add_command(label="Font", command=self.change_font_size)  
 
     def bind_events(self):
         self.text_area.bind("<KeyRelease>", self.on_modified)
