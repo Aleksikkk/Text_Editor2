@@ -11,12 +11,13 @@ class TextEditor:
         self.keywords = ["def", "class", "import", "from", "if", "else", "elif", "for", "while", "return", "print"]
         self.is_modified = False
         self.current_file_path = None
+        self.font_size = 12  # Начальный размер шрифта
         self.create_widgets()
         self.bind_events()
 
     def create_widgets(self):
         # Создание текстовой области
-        self.text_area = scrolledtext.ScrolledText(self.root, wrap=tk.WORD, undo=True, font=("Courier New", 12))
+        self.text_area = scrolledtext.ScrolledText(self.root, wrap=tk.WORD, undo=True, font=("Courier New", self.font_size))
         self.text_area.pack(expand=True, fill='both')
 
         # Создание области вывода
@@ -45,6 +46,8 @@ class TextEditor:
         settings_menu = tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Settings", menu=settings_menu)
         settings_menu.add_command(label="Change Theme", command=self.change_theme)
+        settings_menu.add_separator()  
+        settings_menu.add_command(label="Font", command=self.change_font_size)  
 
     def bind_events(self):
         self.text_area.bind("<KeyRelease>", self.on_modified)
@@ -61,7 +64,7 @@ class TextEditor:
             self.root.bind(key, lambda event, action=action: action())
 
     def on_paste(self, event):
-        self.text_area.event_generate("<<Paste>>")  # Генерируем событие вставки
+        self.text_area.event_generate("<<Paste>>")  
         self.highlight_syntax()  
         return "break"  
 
@@ -69,7 +72,7 @@ class TextEditor:
         if not self.is_modified:
             self.is_modified = True
             self.update_title()
-        self.highlight_syntax()  # Подсвечиваем синтаксис после изменения текста
+        self.highlight_syntax()  
 
     def update_title(self):
         title = "Python Text Editor"
@@ -204,6 +207,12 @@ class TextEditor:
             self.root.config(bg=colors[theme]['bg'])
             self.text_area.config(bg=colors[theme]['bg'], fg=colors[theme]['fg'], insertbackground=colors[theme]['cursor'])
             self.output_area.config(bg=colors[theme]['bg'], fg=colors[theme]['fg'])
+
+    def change_font_size(self):
+        new_size = simpledialog.askinteger("Change Font Size", "Введите новый размер шрифта:", initialvalue=self.font_size)
+        if new_size:
+            self.font_size = new_size
+            self.text_area.config(font=("Courier New", self.font_size))  
 
     def undo_action(self, event=None):
         self.text_area.edit_undo()
