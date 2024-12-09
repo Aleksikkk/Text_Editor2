@@ -194,8 +194,8 @@ class TextEditor:
         return "break"
 
     def change_theme(self):
-        theme = simpledialog.askstring("Change Theme", "Введите тему (light/dark):")
-        if theme in ["dark", "light"]:
+        theme = simpledialog.askstring("Change Theme", "Введите тему (light/dark/yellow):")
+        if theme in ["dark", "light", "yellow"]:
             self.apply_theme(theme)
         else:
             messagebox.showwarning("Warning", "Неизвестная тема.")
@@ -203,7 +203,8 @@ class TextEditor:
     def apply_theme(self, theme):
         colors = {
             "dark": {'bg': 'black', 'fg': 'white', 'cursor': 'white'},
-            "light": {'bg': 'white', 'fg': 'black', 'cursor': 'black'}
+            "light": {'bg': 'white', 'fg': 'black', 'cursor': 'black'},
+            "yellow": {'bg': '#FFFFE0', 'fg': 'black', 'cursor': 'black'}  
         }
         if theme in colors:
             self.root.config(bg=colors[theme]['bg'])
