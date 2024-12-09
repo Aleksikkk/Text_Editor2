@@ -29,7 +29,7 @@ class TextEditor:
         self.root.config(menu=self.menu)
         self.create_file_menu()
         self.create_settings_menu()
-        self.create_font_menu()  
+        self.create_font_menu() 
 
     def create_file_menu(self):
         file_menu = tk.Menu(self.menu, tearoff=0)
@@ -184,15 +184,22 @@ class TextEditor:
             end_index = f"1.0 + {match.end()} chars"
             self.text_area.tag_add("comment", start_index, end_index)
 
+       
+        for match in re.finditer(r'\".*?\"', code):  
+            start_index = f"1.0 + {match.start()} chars"
+            end_index = f"1.0 + {match.end()} chars"
+            self.text_area.tag_add("string_comment", start_index, end_index)
+
         
         for match in re.finditer(r'\b\d+\b', code):  
             start_index = f"1.0 + {match.start()} chars"
             end_index = f"1.0 + {match.end()} chars"
             self.text_area.tag_add("number", start_index, end_index)
 
-        
+       
         self.text_area.tag_config("keyword", foreground="blue")
         self.text_area.tag_config("comment", foreground="green")
+        self.text_area.tag_config("string_comment", foreground="orange")  
         self.text_area.tag_config("number", foreground="purple")  
 
     def autocomplete(self, event):
@@ -214,7 +221,7 @@ class TextEditor:
         colors = {
             "dark": {'bg': 'black', 'fg': 'white', 'cursor': 'white'},
             "light": {'bg': 'white', 'fg': 'black', 'cursor': 'black'},
-            "yellow": {'bg': '#FFFFE0', 'fg': 'black', 'cursor': 'black'}
+            "yellow": {'bg': '#FFFFE0', 'fg': 'black', 'cursor': 'black'}  
         }
         if theme in colors:
             self.root.config(bg=colors[theme]['bg'])
